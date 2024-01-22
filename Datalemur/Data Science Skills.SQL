@@ -17,7 +17,7 @@ HAVING COUNT(skill) = 3
 -- Ordering the result in ascending order of candidate_id
 ORDER BY candidate_id;
 
-(alternate solution)
+"""        (alternate solution)          """
 
 -- Common Table Expression (CTE) named 'cte' to calculate the skill indicator for each candidate
 WITH cte (candidate_id, skill) AS (
