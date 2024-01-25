@@ -1,3 +1,5 @@
+https://datalemur.com/questions/duplicate-job-listings
+
 -- Common Table Expression (CTE) named 'cte' to count the number of titles for each company with more than one title
 WITH cte (company_id, title_count) AS (
     SELECT 
