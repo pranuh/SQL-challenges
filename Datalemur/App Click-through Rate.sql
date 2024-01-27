@@ -1,15 +1,22 @@
--- Goal: Calculate the average stars given in reviews per month and product.
+-- Goal: Calculate the Click-Through Rate (CTR) for each app based on events in the year 2022.
 
--- Selecting the month, product_id, and rounding the average stars to two decimal places
+-- Common Table Expression (CTE) named 'cte' to calculate impression and click counts for each app
+WITH cte (app_id, impression_count, click_count) AS (
+    SELECT 
+        app_id,
+        SUM(CASE WHEN event_type = 'impression' THEN 1 ELSE 0 END) AS impression_count,
+        SUM(CASE WHEN event_type = 'click' THEN 1 ELSE 0 END) AS click_count
+    FROM 
+        events
+    WHERE 
+        EXTRACT(year FROM timestamp) = '2022'
+    GROUP BY 
+        app_id
+)
+
+-- Main query to select app_id and calculate the Click-Through Rate (CTR) for each app
 SELECT 
-    EXTRACT(month FROM submit_date) as mth,
-    product_id,
-    ROUND(AVG(stars), 2) as avg_stars 
+    app_id,
+    ROUND(100.0 * click_count / impression_count, 2) AS ctr
 FROM 
-    reviews
--- Grouping the result by month and product_id
-GROUP BY 
-    1, 2
--- Ordering the result by month and product_id
-ORDER BY 
-    1, 2;
+    cte;
